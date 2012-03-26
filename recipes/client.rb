@@ -26,13 +26,19 @@ mon_host = ['127.0.0.1']
 
 if node.run_list.roles.include?(node['nagios']['server_role'])
   mon_host << node['ipaddress']
-elsif node['nagios']['multi_environment_monitoring']
-  search(:node, "role:#{node['nagios']['server_role']}") do |n|
-   mon_host << n['ipaddress']
-  end
 else
-  search(:node, "role:#{node['nagios']['server_role']} AND chef_environment:#{node.chef_environment}") do |n|
-    mon_host << n['ipaddress']
+  if Chef::Config[:solo]
+    Chef::Log.warn("This recipe uses search. Chef Solo does not support search.")
+  else
+    if node['nagios']['multi_environment_monitoring']
+      search(:node, "role:#{node['nagios']['server_role']}") do |n|
+       mon_host << n['ipaddress']
+      end
+    else
+      search(:node, "role:#{node['nagios']['server_role']} AND chef_environment:#{node.chef_environment}") do |n|
+        mon_host << n['ipaddress']
+      end
+    end
   end
 end
 
