@@ -18,7 +18,7 @@
 # limitations under the License.
 
 package "libwww-perl" do
-  case node[:platform]
+  case node['platform']
   when "redhat","centos","scientific","fedora","suse"
     package_name "perl-libwww-perl"
   when "debian","ubuntu"
@@ -30,7 +30,7 @@ package "libwww-perl" do
 end
 
 package "libcrypt-ssleay-perl" do
-  case node[:platform]
+  case node['platform']
   when "redhat","centos","scientific","fedora","suse"
     package_name "perl-Crypt-SSLeay"
   when "debian","ubuntu"
