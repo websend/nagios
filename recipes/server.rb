@@ -119,7 +119,7 @@ nodes.sort! {|a,b| a.name <=> b.name }
 service_hosts= Hash.new
 search(:role, "*:*") do |r|
   hostgroups << r.name
-  nodes.select {|n| n['roles'].include?(r.name) }.each do |n|
+  nodes.select {|n| n.include?(r.name) }.each do |n|
     service_hosts[r.name] = n[node['nagios']['host_name_attribute']]
   end
 end
